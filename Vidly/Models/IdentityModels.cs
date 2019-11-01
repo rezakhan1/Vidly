@@ -29,5 +29,10 @@ namespace Vidly.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Vidly.Models.Movie> Movies { get; set; }
+        public System.Data.Entity.DbSet<Vidly.Models.Customer> Customer { get; set; }
+
+        public System.Data.Entity.DbSet<Vidly.Models.MemberShipType> MemberShipType { get; set; }
     }
 }
