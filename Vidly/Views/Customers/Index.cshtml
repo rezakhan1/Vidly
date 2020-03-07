@@ -6,11 +6,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+ 
 
 
 <h1 class="text-center text-dark">Customers</h1>
-
+@Html.ActionLink("Add Cutomer", "New", "Customers", null, new { @class = "btn btn-lg btn-info" })
 <table class="table table-bordered table-striped">
     <thead class="thead-dark">
         <tr>
@@ -28,7 +28,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(customer.Name, "CustomerDetails", "Customers", new { id =customer.id })
+                    @Html.ActionLink(customer.Name, "Edit", "Customers", new {Id=customer.id },null)
                 </td>
                 <td>
                     @customer.MemberShipType.MembershipType

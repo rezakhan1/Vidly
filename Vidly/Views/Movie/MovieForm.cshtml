@@ -1,0 +1,68 @@
+﻿@model  Vidly.Models.Movie
+@{
+    ViewBag.Title = "MovieFrom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    var heading = string.Empty;
+     
+}
+
+<h2>@heading</h2>
+
+
+@using (@Html.BeginForm("Save", "Movie"))
+{
+    //  @Html.ValidationSummary();
+    @Html.ValidationSummary(true, "Please Fix The Follwing Error");
+    <div class="form-group">
+        @Html.LabelFor(m =>Model.Name)
+
+        @Html.TextBoxFor(m => Model.Name, new { @class = "form-control" })
+
+        @Html.ValidationMessageFor(m=>m.Name)
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReleaseDate)
+
+        @Html.TextBoxFor(m => m.ReleaseDate, "{0:d MM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ReleaseDate)
+    </div>
+
+     
+    <div class="form-group">
+        @Html.LabelFor(m => m.Genre)
+                        @Html.DropDownListFor( m=>m.Genre, new List<SelectListItem>
+                {
+                   new SelectListItem{ Text="Comedy", Value = "Comedy" },
+                   new SelectListItem{ Text="Action", Value = "Action" },
+                   new SelectListItem{ Text="Family", Value = "Family" },
+                   new SelectListItem{ Text="Fiction", Value = "Fiction" },
+                   new SelectListItem{ Text="Romance", Value = "Romance" },
+                   new SelectListItem{ Text="Family", Value = "Family" },
+
+                },"Select Movie Type", new  { @class="form-control"})
+
+        
+        
+    </div>
+    <div class="form-group">
+         
+            @Html.LabelFor(m => m.NumberInStock)
+
+            @Html.TextBoxFor(m => m.NumberInStock, new { @class = "form-control" })
+
+        @Html.ValidationMessageFor(m => m.NumberInStock)
+
+    </div>
+    @Html.HiddenFor(m => m.Id)
+    <button class="btn btn-primary" type="submit">Submit</button>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+     
+    }

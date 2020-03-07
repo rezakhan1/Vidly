@@ -66,20 +66,64 @@ namespace Vidly.Controllers
             var memberShipType = _context.MemberShipType.ToList();
             var viewModel = new NewCustomerViewModel()
             {
-                MemberShipType = memberShipType
+                MemberShipType = memberShipType,
+                Customer=new Customer()
             };
-            return View(viewModel);
+            return View("CustomerForm", viewModel);
         }
         [HttpPost]
-        public ActionResult Create( NewCustomerViewModel cust)
+        [ValidateAntiForgeryToken]
+        public ActionResult Save( NewCustomerViewModel cust)
         {
-            // return View(cust);
-            _context.Customer.Add(cust.Customer);
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new NewCustomerViewModel()
+                {
+                    Customer = cust.Customer,
+                    MemberShipType=_context.MemberShipType.ToList()
+
+                };
+
+                return View("CustomerForm", viewModel);
+            }
+
+            if (cust.Customer.id==0)
+            {
+                _context.Customer.Add(cust.Customer);
+            }
+
+            else
+            {
+                
+                //TryUpdateModel(cust.Customer, "", new string[] { "Name", "DOB" });
+                var custInDb = _context.Customer.Single(c => c.id == cust.Customer.id);
+              //  custInDb = cust.Customer;
+             //   TryUpdateModel(custInDb);    //Not Use for Security purpose
+                custInDb.Name = cust.Customer.Name;
+                custInDb.DateOfBirth = cust.Customer.DateOfBirth;
+                custInDb.MemberShipTypeId= cust.Customer.MemberShipTypeId;
+                custInDb.isSubscribeToNewsLetter = cust.Customer.isSubscribeToNewsLetter; 
+            }
+
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Customers");
         }
 
+
+        public  ActionResult Edit(int id)
+        {
+            var customer = _context.Customer.SingleOrDefault(c => c.id == id);
+
+            var EditCustomer = new NewCustomerViewModel {
+                Customer = customer,
+                MemberShipType = _context.MemberShipType.ToList()
+
+            };
+
+            return View("CustomerForm", EditCustomer);
+
+        }
 
     }
 }
